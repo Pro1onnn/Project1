@@ -47,28 +47,21 @@ public class Message {
     }
 
     public void gallowsInDisplay(int errorCounter) {
-        switch (errorCounter) {
-            case 0:
-                System.out.println("--------\n|      |\n|       \n|\n|\n|");
-                break;
-            case 1:
-                System.out.println("--------\n|      |\n|      0\n|\n|\n|");
-                break;
-            case 2:
-                System.out.println("--------\n|      |\n|      0\n|      |\n|\n|");
-                break;
-            case 3:
-                System.out.println("--------\n|      |\n|      0\n|     /|\n|\n|");
-                break;
-            case 4:
-                System.out.println("--------\n|      |\n|      0\n|     /|\\\n|\n|");
-                break;
-            case 5:
-                System.out.println("--------\n|      |\n|      0\n|     /|\\\n|     /\n|");
-                break;
-            case 6:
-                System.out.println("--------\n|      |\n|      0\n|     /|\\\n|     / \\\n|");
-                break;
+        StringBuilder sb = new StringBuilder();
+        sb.append("--------\n");
+        sb.append("|      |\n");
+        sb.append("|      ").append(errorCounter >= 1 ? "o\n" : "\n");
+        if (errorCounter >= 4) {
+            sb.append("|     /|\\\n");
+        } else if (errorCounter >= 3) {
+            sb.append("|     /|\n");
+        } else if (errorCounter >= 2) {
+            sb.append("|      |\n");
+        } else {
+            sb.append("|\n");
         }
+        sb.append("|     ").append(errorCounter >= 6 ? "/ \\\n" : (errorCounter >= 5 ? "  \\\n" : "\n"));
+        sb.append("|\n");
+        System.out.println(sb);
     }
 }
