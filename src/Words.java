@@ -4,15 +4,14 @@ import java.util.*;
 
 public class Words {
 
-    File file = Path.of("resources", "wordsGame.txt").toFile();
-    ArrayList<String> words = new ArrayList<>();
-    Set<Character> setAccessibleChars = new LinkedHashSet<>();
-    Random rand = new Random();
-    String word;
+    private File file = Path.of("resources", "wordsGame.txt").toFile();
+    private List<String> words = new ArrayList<>();
+    private Set<Character> setAccessibleChars = new LinkedHashSet<>();
+    private Random rand = new Random();
+    private String word;
 
-    public ArrayList<String> loadWords() {
+    Words() {
         String line;
-        words.clear();
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             while ((line = br.readLine()) != null) {
                 words.add(line);
@@ -22,19 +21,17 @@ public class Words {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return words;
     }
 
-    public String getWord(ArrayList<String> list) {
-        word = list.get(rand.nextInt(list.size())).toLowerCase();
-        return word;
+    public String returnsRandomWordFromList(List<String> list) {
+        return word = list.get(rand.nextInt(list.size())).toLowerCase();
     }
 
-    public char[] getCharMassiveWord(String word) {
+    public char[] getCharMassiveWord() {
         return word.toCharArray();
     }
 
-    public char[] getMaskWord(String word) {
+    public char[] getMaskWord() {
         return word.replaceAll("[а-яё]", "*").toCharArray();
     }
 
@@ -44,6 +41,10 @@ public class Words {
 
     public void clearSet() {
         setAccessibleChars.clear();
+    }
+
+    public List<String> getWords() {
+        return words;
     }
 }
 

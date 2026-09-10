@@ -1,53 +1,62 @@
-public class Message {
+public class MessageUtil {
 
-    public void startGame() {
+    public static void startGame() {
+        System.out.println("Добро пожаловать в игру виселица!");
+    }
+
+    public static void printInfoRulesGame() {
         System.out.println("Вводите по одной букве на кириллице в нижнем регистре за раз: ");
     }
 
-    public void choiceGame() {
-        System.out.println("Добро пожаловать в игру виселица!");
+    public static void printInfoAboutStartStopGame() {
         System.out.println("Нажмите " + 1 + " чтобы продолжить.");
         System.out.println("Нажмите " + 0 + " чтобы выйти.");
     }
 
-    public void stopGame() {
+    public static void userInputErrorWhenLaunchingGame() {
+        System.out.println("Неверный ввод. Попробуйте снова.");
+    }
+
+    public static void stopGame() {
         System.out.println("Досвидания!");
     }
 
-    public void errorInputCharUser() {
+    public static void errorInputCharUser() {
         System.out.println("Вы ввели букву НЕ на кириллице или НЕ в нижнем регистре или вы ввели НЕ букву вовсе");
     }
 
-    public void repeatedInputCharUser() {
+    public static void repeatedInputCharUser() {
         System.out.println("Вы уже вводили эту букву");
     }
 
-    public void correctCharInWord(char result) {
+    public static void correctCharInWord(char result) {
         System.out.println("Буква: " + result + " есть в этом слове.");
     }
 
-    public void noCharInWord(char result) {
+    public static void noCharInWord(char result) {
         System.out.println("В этом слове нет буквы " + result);
     }
 
-    public void userWin() {
+    public static void userWin() {
         System.out.println("Вы выиграли!");
     }
 
-    public void userLose(char[] result) {
+    public static void userLose(char[] result) {
         System.out.println("Вы проиграли! Слово было: " + new String(result));
     }
 
-    public void counterErrorInDisplay(int errorCounter) {
-        System.out.println("Вы допустили: " + errorCounter + " ошибок");
+    public static void counterErrorInDisplay(int errorCounter) {
+        System.out.println("Количество ошибок: " + errorCounter);
     }
 
-    public void charMaskInDisplay(char[] mask) {
+    public static void charMaskInDisplay(char[] mask) {
         System.out.println(mask);
     }
 
-    public void gallowsInDisplay(int errorCounter) {
+    public static void gallowsInDisplay(int errorCounter) {
+
         StringBuilder sb = new StringBuilder();
+
         sb.append("--------\n");
         sb.append("|      |\n");
         sb.append("|      ").append(errorCounter >= 1 ? "o\n" : "\n");
