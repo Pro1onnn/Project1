@@ -1,27 +1,31 @@
 import java.util.*;
 
 public class Game {
-    Scanner scan = new Scanner(System.in);
-    Words words = new Words();
-    Message message = new Message();
 
-    public void gameStartStop() {
+    private static final int MAX_ERROR_COUNT = 6;
+    private static final String USER_INPUT_VALUE_FOR_START = "1";
+    private static final String USER_INPUT_VALUE_FOR_STOP = "0";
+
+    private Scanner scan = new Scanner(System.in);
+    private Words words = new Words();
+
+    public void gameStart() {
         boolean playAgain = true;
+        MessageUtil.startGame();
         while (playAgain) {
-            message.choiceGame();
-            int result = scan.nextInt();
-            scan.nextLine();
-            if (result == 1) {
+            MessageUtil.printInfoAboutStartStopGame();
+            String result = scan.nextLine();
+            if (result.equals(USER_INPUT_VALUE_FOR_START)) {
                 words.clearSet();
-                words.getWord(words.loadWords());
-                char[] charUser = words.getCharMassiveWord(words.word);
-                char[] charMask = words.getMaskWord(words.word);
+                words.returnsRandomWordFromList();
+                char[] charUser = words.getCharMassiveWord();
+                char[] charMask = words.getMaskWord();
                 checkCharInWord(charUser, charMask);
-            } else if (result == 0) {
-                message.stopGame();
+            } else if (result.equals(USER_INPUT_VALUE_FOR_STOP)) {
+                MessageUtil.stopGame();
                 playAgain = false;
             } else {
-                System.out.println("Неверный ввод. Попробуйте снова.");
+                MessageUtil.userInputErrorWhenLaunchingGame();
             }
         }
     }
@@ -33,19 +37,19 @@ public class Game {
                 char ch = str.charAt(0);
                 return ch;
             } else {
-                message.errorInputCharUser();
+                MessageUtil.errorInputCharUser();
             }
         }
     }
 
     public void checkCharInWord(char[] charUser, char[] charMask) {
-        message.startGame();
+        MessageUtil.printInfoRulesGame();
         int counterError = 0;
-        while (counterError < 6 && new String(charMask).contains("*")) {
+        while (counterError < MAX_ERROR_COUNT && new String(charMask).contains("*")) {
             char charInputUser = checkCharInputUser();
             boolean isFound = false;
             if (!words.checkCharAddSet(charInputUser)) {
-                message.repeatedInputCharUser();
+                MessageUtil.repeatedInputCharUser();
                 continue;
             }
             for (int i = 0; i < charUser.length; i++) {
@@ -55,19 +59,19 @@ public class Game {
                 }
             }
             if (isFound) {
-                message.correctCharInWord(charInputUser);
+                MessageUtil.correctCharInWord(charInputUser);
             } else {
                 counterError++;
-                message.noCharInWord(charInputUser);
-                message.gallowsInDisplay(counterError);
-                message.counterErrorInDisplay(counterError);
+                MessageUtil.noCharInWord(charInputUser);
+                MessageUtil.gallowsInDisplay(counterError);
+                MessageUtil.counterErrorInDisplay(counterError);
             }
-            message.charMaskInDisplay(charMask);
+            MessageUtil.charMaskInDisplay(charMask);
         }
-        if (counterError == 6) {
-            message.userLose(charUser);
+        if (counterError == MAX_ERROR_COUNT) {
+            MessageUtil.userLose(charUser);
         } else {
-            message.userWin();
+            MessageUtil.userWin();
         }
     }
 }
