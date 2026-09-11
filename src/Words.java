@@ -4,7 +4,8 @@ import java.util.*;
 
 public class Words {
 
-    private File file = Path.of("resources", "wordsGame.txt").toFile();
+    private static final File PATH_FILE = Path.of("resources", "wordsGame.txt").toFile();
+
     private List<String> words = new ArrayList<>();
     private Set<Character> setAccessibleChars = new LinkedHashSet<>();
     private Random rand = new Random();
@@ -12,7 +13,7 @@ public class Words {
 
     Words() {
         String line;
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(PATH_FILE))) {
             while ((line = br.readLine()) != null) {
                 words.add(line);
             }
@@ -23,8 +24,9 @@ public class Words {
         }
     }
 
-    public String returnsRandomWordFromList(List<String> list) {
-        return word = list.get(rand.nextInt(list.size())).toLowerCase();
+    public String returnsRandomWordFromList() {
+        word = words.get(rand.nextInt(words.size())).toLowerCase();
+        return word;
     }
 
     public char[] getCharMassiveWord() {
@@ -47,4 +49,3 @@ public class Words {
         return words;
     }
 }
-

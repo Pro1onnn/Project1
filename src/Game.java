@@ -2,7 +2,9 @@ import java.util.*;
 
 public class Game {
 
-    public static final int MAX_ERROR_COUNT = 6;
+    private static final int MAX_ERROR_COUNT = 6;
+    private static final String USER_INPUT_VALUE_FOR_START = "1";
+    private static final String USER_INPUT_VALUE_FOR_STOP = "0";
 
     private Scanner scan = new Scanner(System.in);
     private Words words = new Words();
@@ -13,13 +15,13 @@ public class Game {
         while (playAgain) {
             MessageUtil.printInfoAboutStartStopGame();
             String result = scan.nextLine();
-            if (result.equals("1")) {
+            if (result.equals(USER_INPUT_VALUE_FOR_START)) {
                 words.clearSet();
-                words.returnsRandomWordFromList(words.getWords());
+                words.returnsRandomWordFromList();
                 char[] charUser = words.getCharMassiveWord();
                 char[] charMask = words.getMaskWord();
                 checkCharInWord(charUser, charMask);
-            } else if (result.equals("0")) {
+            } else if (result.equals(USER_INPUT_VALUE_FOR_STOP)) {
                 MessageUtil.stopGame();
                 playAgain = false;
             } else {

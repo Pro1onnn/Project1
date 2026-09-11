@@ -1,3 +1,4 @@
+
 public class MessageUtil {
 
     public static void startGame() {
