@@ -2,17 +2,16 @@ import java.util.Scanner;
 
 public class UserInputHandler {
 
-    private Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = new Scanner(System.in);
     private char enteredLetter;
     private String inputUser;
 
     public String readInputUser() {
-        inputUser = scanner.nextLine().toLowerCase();
-        return inputUser;
+        return inputUser = scanner.nextLine().toLowerCase();
     }
 
-    private char conversionLetterIntoSymbol() {
-        return enteredLetter = inputUser.charAt(0);
+    private void conversionLetterIntoSymbol() {
+        enteredLetter = inputUser.charAt(0);
     }
 
     public boolean isValidLetterInput() {

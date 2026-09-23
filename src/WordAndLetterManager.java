@@ -1,16 +1,16 @@
-public class WordManager {
+public class WordAndLetterManager {
 
-    private UserInputHandler userInputHandler;
-    private HandlerWord handlerWord;
-    private HandlerSecretWord handlerSecretWord;
-    private ContainerWithLetters containerWithLetters;
+    private final UserInputHandler userInputHandler;
+    private final HandlerWord handlerWord;
+    private final HandlerSecretWord handlerSecretWord;
+    private final ContainerWithEnteredLetters containerWithEnteredLetters;
 
-    public WordManager(UserInputHandler userInputHandler, HandlerWord handlerWord,
-                       HandlerSecretWord handlerSecretWord, ContainerWithLetters containerWithLetters) {
+    public WordAndLetterManager(UserInputHandler userInputHandler, HandlerWord handlerWord,
+                                HandlerSecretWord handlerSecretWord, ContainerWithEnteredLetters containerWithEnteredLetters) {
         this.userInputHandler = userInputHandler;
         this.handlerWord = handlerWord;
         this.handlerSecretWord = handlerSecretWord;
-        this.containerWithLetters = containerWithLetters;
+        this.containerWithEnteredLetters = containerWithEnteredLetters;
     }
 
     public char[] getCharArrayWord() {
@@ -36,11 +36,10 @@ public class WordManager {
 
     public boolean isInSetInputLetters() {
         while (userInputHandler.isValidLetterInput()) {
-            if (containerWithLetters.checkCharAddSet()) {
+            if (containerWithEnteredLetters.checkCharAddSet()) {
                 return checkLetterInputUserInWords();
             } else {
-                GameView.repeatedInputCharUser();
-                System.out.println("Список введенных бУкВ: " + containerWithLetters.getSetAccessibleChars());
+                GameView.repeatedInputCharUser(userInputHandler.getEnteredLetter());
             }
         }
         return false;
@@ -56,6 +55,6 @@ public class WordManager {
     }
 
     public void clearSet() {
-        containerWithLetters.getSetAccessibleChars().clear();
+        containerWithEnteredLetters.getSetAccessibleChars().clear();
     }
 }

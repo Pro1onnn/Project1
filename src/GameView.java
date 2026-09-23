@@ -1,3 +1,5 @@
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public final class GameView {
 
@@ -10,8 +12,8 @@ public final class GameView {
     }
 
     public static void printInfoAboutStartStopGame() {
-        System.out.println("Нажмите " + 1 + " чтобы продолжить.");
-        System.out.println("Нажмите " + 0 + " чтобы выйти.");
+        System.out.printf("Нажмите %s чтобы продолжить. \n", 1);
+        System.out.printf("Нажмите %s чтобы выйти. \n", 0);
     }
 
     public static void userInputErrorWhenLaunchingGame() {
@@ -26,16 +28,16 @@ public final class GameView {
         System.out.println("Вы ввели букву НЕ русского алфавита");
     }
 
-    public static void repeatedInputCharUser() {
-        System.out.println("Вы уже вводили эту букву");
+    public static void repeatedInputCharUser(char result) {
+        System.out.printf("Вы уже вводили букву %S \n", result);
     }
 
     public static void correctCharInWord(char result) {
-        System.out.println("Буква: " + result + " есть в этом слове.");
+        System.out.printf("Буква: %C есть в этом слове.  \n", result);
     }
 
     public static void noCharInWord(char result) {
-        System.out.println("В этом слове нет буквы " + result);
+        System.out.printf("Буквы: %C нет в этом слове.  \n", result);
     }
 
     public static void userWin() {
@@ -43,15 +45,22 @@ public final class GameView {
     }
 
     public static void userLose(char[] result) {
-        System.out.println("Вы проиграли! Слово было: " + new String(result));
+        System.out.printf("Вы проиграли! Слово было: %s. \n", new String(result));
     }
 
     public static void counterErrorInDisplay(int errorCounter) {
-        System.out.println("Количество ошибок: " + errorCounter);
+        System.out.printf("Количество ошибок: %d \n", errorCounter);
     }
 
     public static void charMaskInDisplay(char[] mask) {
         System.out.println(mask);
+    }
+
+    public static void charMaskOutDisplay(Set<Character> setAccessibleChars) {
+        String result = setAccessibleChars.stream()
+                .map(String::valueOf)
+                .collect(Collectors.joining(", "));
+        System.out.printf("Список уже введенных вами букв: %S\n", result);
     }
 
 
@@ -74,7 +83,7 @@ public final class GameView {
                         "|\n" +
                         "|\n" +
                         "|\n" +
-                        "|\n";
+                        "|";
 
         gallowsPrint[2] =
                 "________\n" +
@@ -83,7 +92,7 @@ public final class GameView {
                         "|      |\n" +
                         "|\n" +
                         "|\n" +
-                        "|\n";
+                        "|";
 
         gallowsPrint[3] =
                 "________\n" +
@@ -92,7 +101,7 @@ public final class GameView {
                         "|     /|\n" +
                         "|\n" +
                         "|\n" +
-                        "|\n";
+                        "|";
 
         gallowsPrint[4] =
                 "________\n" +
@@ -101,7 +110,7 @@ public final class GameView {
                         "|     /|\\\n" +
                         "|\n" +
                         "|\n" +
-                        "|\n";
+                        "|";
 
         gallowsPrint[5] =
                 "________\n" +
@@ -110,7 +119,7 @@ public final class GameView {
                         "|     /|\\\n" +
                         "|     /\n" +
                         "|\n" +
-                        "|\n";
+                        "|";
 
         gallowsPrint[6] =
                 "________\n" +
@@ -119,7 +128,7 @@ public final class GameView {
                         "|     /|\\\n" +
                         "|     / \\\n" +
                         "|\n" +
-                        "|\n";
+                        "|";
 
         for (int i = 0; i < gallowsPrint.length; i++) {
             if (i == errorCounter) {

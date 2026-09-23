@@ -1,22 +1,17 @@
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-public class ContainerWithLetters {
+public class ContainerWithEnteredLetters {
 
-    UserInputHandler userInputHandler;
+    private final UserInputHandler userInputHandler;
+    private final Set<Character> setAccessibleChars = new LinkedHashSet<>();
 
-    public ContainerWithLetters(UserInputHandler userInputHandler) {
+    public ContainerWithEnteredLetters(UserInputHandler userInputHandler) {
         this.userInputHandler = userInputHandler;
     }
 
-    private Set<Character> setAccessibleChars = new LinkedHashSet<>();
-
     public boolean checkCharAddSet() {
         return setAccessibleChars.add(userInputHandler.getEnteredLetter());
-    }
-
-    public void clearSet() {
-        setAccessibleChars.clear();
     }
 
     public Set<Character> getSetAccessibleChars() {
