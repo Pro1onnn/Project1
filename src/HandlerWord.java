@@ -12,9 +12,7 @@ public class HandlerWord {
     }
 
     public String getRandomWordFromList() {
-        int randomIndex = random.nextInt(words.size());
-        selectedWord = words.get(randomIndex).toLowerCase();
-        return selectedWord;
+        return words.get(random.nextInt(words.size())).toLowerCase();
     }
 
     public char[] getCharArrayWord() {
