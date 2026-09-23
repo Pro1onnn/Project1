@@ -1,77 +1,80 @@
-import java.util.*;
-
 public class Game {
 
     private static final int MAX_ERROR_COUNT = 6;
     private static final String USER_INPUT_VALUE_FOR_START = "1";
     private static final String USER_INPUT_VALUE_FOR_STOP = "0";
 
-    private Scanner scan = new Scanner(System.in);
-    private Words words = new Words();
+    private final UserInputHandler userInputHandler;
+    private final HandlerSecretWord handlerSecretWord;
+    private final WordAndLetterManager wordAndLetterManager;
+    private ContainerWithEnteredLetters containerWithEnteredLetters;
+    private int counterError;
 
-    public void gameStart() {
-        boolean playAgain = true;
-        MessageUtil.startGame();
-        while (playAgain) {
-            MessageUtil.printInfoAboutStartStopGame();
-            String result = scan.nextLine();
-            if (result.equals(USER_INPUT_VALUE_FOR_START)) {
-                words.clearSet();
-                words.returnsRandomWordFromList();
-                char[] charUser = words.getCharMassiveWord();
-                char[] charMask = words.getMaskWord();
-                checkCharInWord(charUser, charMask);
-            } else if (result.equals(USER_INPUT_VALUE_FOR_STOP)) {
-                MessageUtil.stopGame();
-                playAgain = false;
+    public Game(UserInputHandler userInputHandler, HandlerSecretWord handlerSecretWord, WordAndLetterManager wordAndLetterManager,
+                ContainerWithEnteredLetters containerWithEnteredLetters) {
+        this.userInputHandler = userInputHandler;
+        this.handlerSecretWord = handlerSecretWord;
+        this.wordAndLetterManager = wordAndLetterManager;
+        this.containerWithEnteredLetters = containerWithEnteredLetters;
+    }
+
+    public void startGameOrExit() {
+        boolean resultInputUser = true;
+        while (resultInputUser) {
+            String value = userInputHandler.readInputUser();
+            if (value.equals(USER_INPUT_VALUE_FOR_START)) {
+                GameView.printInfoRulesGame();
+                handlerSecretWord.convertWordInMask();
+                startGamePlay();
+                GameView.printInfoAboutStartStopGame();
+            } else if (value.equals(USER_INPUT_VALUE_FOR_STOP)) {
+                resultInputUser = false;
+                GameView.stopGame();
             } else {
-                MessageUtil.userInputErrorWhenLaunchingGame();
+                GameView.userInputErrorWhenLaunchingGame();
             }
         }
     }
 
-    public char checkCharInputUser() {
-        while (true) {
-            String str = scan.nextLine();
-            if (str.matches("[а-яё]")) {
-                char ch = str.charAt(0);
-                return ch;
-            } else {
-                MessageUtil.errorInputCharUser();
-            }
+    private void startGamePlay() {
+        while (!isGameOver()) {
+            makeMove();
+        }
+        if (isLose()) {
+            GameView.userLose(wordAndLetterManager.getCharArrayWord());
+            wordAndLetterManager.clearSet();
+            counterError = 0;
+        } else if (isWin()) {
+            GameView.userWin();
+            wordAndLetterManager.clearSet();
+            counterError = 0;
         }
     }
 
-    public void checkCharInWord(char[] charUser, char[] charMask) {
-        MessageUtil.printInfoRulesGame();
-        int counterError = 0;
-        while (counterError < MAX_ERROR_COUNT && new String(charMask).contains("*")) {
-            char charInputUser = checkCharInputUser();
-            boolean isFound = false;
-            if (!words.checkCharAddSet(charInputUser)) {
-                MessageUtil.repeatedInputCharUser();
-                continue;
-            }
-            for (int i = 0; i < charUser.length; i++) {
-                if (charUser[i] == charInputUser) {
-                    isFound = true;
-                    charMask[i] = charInputUser;
-                }
-            }
-            if (isFound) {
-                MessageUtil.correctCharInWord(charInputUser);
-            } else {
-                counterError++;
-                MessageUtil.noCharInWord(charInputUser);
-                MessageUtil.gallowsInDisplay(counterError);
-                MessageUtil.counterErrorInDisplay(counterError);
-            }
-            MessageUtil.charMaskInDisplay(charMask);
-        }
-        if (counterError == MAX_ERROR_COUNT) {
-            MessageUtil.userLose(charUser);
+    private void makeMove() {
+        if (wordAndLetterManager.isInSetInputLetters()) {
+            GameView.correctCharInWord(userInputHandler.getEnteredLetter());
+            wordAndLetterManager.revealLetter(userInputHandler.getEnteredLetter());
+            System.out.println(handlerSecretWord.getMaskLetters());
+            GameView.charMaskOutDisplay(containerWithEnteredLetters.getSetAccessibleChars());
         } else {
-            MessageUtil.userWin();
+            GameView.noCharInWord(userInputHandler.getEnteredLetter());
+            counterError++;
+            GameView.gallowsInDisplay(counterError);
+            GameView.counterErrorInDisplay(counterError);
+            GameView.charMaskOutDisplay(containerWithEnteredLetters.getSetAccessibleChars());
         }
+    }
+
+    private boolean isGameOver() {
+        return isLose() || isWin();
+    }
+
+    private boolean isWin() {
+        return wordAndLetterManager.checkIfLettersAreOpen();
+    }
+
+    private boolean isLose() {
+        return counterError == MAX_ERROR_COUNT;
     }
 }
